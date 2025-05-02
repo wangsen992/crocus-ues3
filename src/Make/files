@@ -1,0 +1,9 @@
+functionObjects/groundDistance/groundDistance.C
+
+fvPatchField/surfaceInterpolatedFixedProfile/surfaceInterpolatedFixedProfileFvPatchFields.C
+
+utilityFuncs/objectRegistryFuncs.C
+
+surfaceMeshTools/surfaceMeshTools/surfaceMeshTools.C
+
+LIB = $(FOAM_USER_LIBBIN)/libtest

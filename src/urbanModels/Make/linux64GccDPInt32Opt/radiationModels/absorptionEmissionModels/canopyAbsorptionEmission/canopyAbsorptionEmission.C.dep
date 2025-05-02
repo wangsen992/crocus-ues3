@@ -1,0 +1,6 @@
+$(OBJECTS_DIR)/radiationModels/absorptionEmissionModels/canopyAbsorptionEmission/canopyAbsorptionEmission.C.dep: \
+radiationModels/absorptionEmissionModels/canopyAbsorptionEmission/canopyAbsorptionEmission.C \
+radiationModels/absorptionEmissionModels/canopyAbsorptionEmission/canopyAbsorptionEmission.H \
+$(WM_PROJECT_DIR)/src/OpenFOAM/lnInclude/addToRunTimeSelectionTable.H \
+
+#END

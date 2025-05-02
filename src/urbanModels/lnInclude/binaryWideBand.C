@@ -1,0 +1,1 @@
+../radiationModels/absorptionEmissionModels/binaryWideBand/binaryWideBand.C

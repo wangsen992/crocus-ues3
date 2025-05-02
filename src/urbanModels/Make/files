@@ -1,0 +1,27 @@
+
+treeModel/canopyModel/canopyModel/canopyModel.C
+treeModel/canopyModel/canopyModel/canopyModelNew.C
+treeModel/canopyModel/canopyModel/canopyModels.C
+/*
+treeModel/treeModelList/treeModelList.C
+
+treeModel/treeModel/treeModel.C
+treeModel/treeModel/treeModelNew.C
+
+
+treeModel/canopyModel/canopyMomentumTransferModel/canopyKEpsilonModels/canopykEpsSourceModels/HiraokakEpsSourceModel.C
+
+treeModel/trunkModel/trunkModel/trunkModel.C
+treeModel/trunkModel/trunkModel/trunkModelNew.C
+treeModel/trunkModel/trunkModel/trunkModels.C
+
+fvModels/treeModelSource/treeModelSource.C
+fvModels/fvDom/fvDomRadiation.C
+
+radiationModels/absorptionEmissionModels/canopyAbsorptionEmission/canopyAbsorptionEmission.C
+radiationModels/absorptionEmissionModels/binaryWideBand/binaryWideBand.C
+radiationModels/derivedFvPatchFields/solarRadiation/solarRadiationMixedFvPatchScalarField.C
+
+derivedFvPatchFields/energyBalanceHeatFluxTemperature/energyBalanceHeatFluxTemperatureFvPatchScalarField.C
+*/
+LIB = $(FOAM_USER_LIBBIN)/liburbanModels

@@ -1,0 +1,1 @@
+../radiationModels/derivedFvPatchFields/solarRadiation/solarRadiationMixedFvPatchScalarField.H

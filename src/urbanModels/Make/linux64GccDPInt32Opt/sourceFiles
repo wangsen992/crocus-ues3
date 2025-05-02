@@ -1,0 +1,6 @@
+SOURCE = \
+treeModel/canopyModel/canopyModel/canopyModel.C \
+treeModel/canopyModel/canopyModel/canopyModelNew.C \
+treeModel/canopyModel/canopyModel/canopyModels.C \
+
+# sources

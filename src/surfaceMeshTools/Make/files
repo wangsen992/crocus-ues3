@@ -1,0 +1,4 @@
+surfaceMeshTools/surfaceMeshTools.C
+meshSurfaceCutter/meshSurfaceCutter.C
+
+LIB = $(FOAM_USER_LIBBIN)/libsurfaceMeshTools
