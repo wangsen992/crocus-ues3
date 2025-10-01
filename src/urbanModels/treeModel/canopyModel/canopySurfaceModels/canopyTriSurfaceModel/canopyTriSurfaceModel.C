@@ -45,7 +45,7 @@ void canopyTriSurfaceModel<BaseCanopyModel>::init()
     const polyMesh& mesh = BaseCanopyModel::tree().mesh();
     // Compute the total area of leaves within a mesh cell
     const pointField& surfacePoints = surface_.points();
-    const faceList& faces = surface_.faces();
+    const List<labelledTri>& faces = surface_.surfFaces();
     // Correct the intersected cells by the leafy surface
     labelHashSet canopyCellsIndex = surfaceMeshTools::findSurfaceCutCells(mesh, surface_);
     
@@ -113,10 +113,10 @@ void canopyTriSurfaceModel<BaseCanopyModel>::init()
         this->lad().set
         (
           cellList[i], 
-          dimensionedVector
+          dimensionedScalar
           (
             dimArea/dimVolume, 
-            cellLeafArea[cellList[i]] / mesh.cellVolumes()[cellList[i]]
+            mag(cellLeafArea[cellList[i]]) / mesh.cellVolumes()[cellList[i]]
           )
         );
         this->ldia().set
@@ -141,10 +141,10 @@ dimensionedScalarCellSet canopyTriSurfaceModel<BaseCanopyModel>::calcLaCov
 {
     // Loading surface
     triSurfaceSearch ts(surface);
-    vector testDirection = (-1) * direction;
+    vector testDirection = normalised((-1) * direction);
 
     // Find faces in each cell
-    const faceList& faces = surface.faces(); 
+    const List<labelledTri>& faces = surface.surfFaces(); 
     scalarField faceAreas = mag(surface.faceAreas())();
     const pointField& faceCs = surface.faceCentres();
     Info << "Number of pointIndexHits: " << faceCs.size() << endl;
@@ -209,7 +209,7 @@ dimensionedScalarCellSet canopyTriSurfaceModel<BaseCanopyModel>::calcLaCov
                 // Note: face::area<pointField> is used instead of 
                 // facei.area() as the latter gives (0 0 0) for some faces,
                 // reasons unknown for now
-                face::area<pointField>(facei.points(mesh.points())) 
+                facei.areaNormal(facei.points(mesh.points())) 
                 // aligned to the test direction
                 & normalised(testDirection)
                 // correct with owner
@@ -272,11 +272,12 @@ dimensionedScalarCellSet canopyTriSurfaceModel<BaseCanopyModel>::calcLaCov
             ALeaves += 
               mag
               (
-                  normalised(testDirection) 
-                & face::area<pointField>
+                  cellFaces[i].areaNormal
                   (
                     cellFaces[i].points(surface.points())
                   )
+                  & 
+                  testDirection 
               );
           }
         }

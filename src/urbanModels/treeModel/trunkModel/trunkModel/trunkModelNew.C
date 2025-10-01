@@ -12,7 +12,7 @@ autoPtr<trunkModel> trunkModel::New
 {
     word trunkModelType(tree.dict().subDict("trunk").lookup("type"));
 
-    treeModelConstructorTable::iterator cstrIter = 
+    auto cstrIter = 
         treeModelConstructorTablePtr_->find(trunkModelType);
 
     if (cstrIter == treeModelConstructorTablePtr_->end())

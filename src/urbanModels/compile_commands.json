@@ -22,19 +22,10 @@
       "-I/app/openfoam/src/OpenFOAM/lnInclude",
       "-I/app/openfoam/src/finiteVolume/lnInclude",
       "-I/app/openfoam/src/meshTools/lnInclude",
-      "-I/app/openfoam/src/sampling/lnInclude",
-      "-I/app/openfoam/src/MomentumTransportModels/momentumTransportModels/lnInclude",
-      "-I/app/openfoam/src/MomentumTransportModels/incompressible/lnInclude",
-      "-I/app/openfoam/src/MomentumTransportModels/compressible/lnInclude",
-      "-I/app/openfoam/src/thermophysicalModels/basic/lnInclude",
-      "-I/app/openfoam/src/thermophysicalModels/specie/lnInclude",
-      "-I/app/openfoam/src/thermophysicalModels/reactionThermo/lnInclude",
-      "-I/app/openfoam/src/ThermophysicalTransportModels/lnInclude",
-      "-I/app/openfoam/src/transportModels/lnInclude",
-      "-I/app/openfoam/src/radiationModels/lnInclude",
-      "-I/app/openfoam/src/triSurface/lnInclude",
+      "-I/app/openfoam/src/surfMesh/lnInclude",
+      "-I/app/openfoam/src/parallel/distributed/lnInclude",
+      "-I/app/openfoam/src/thermophysicalModels/radiation/lnInclude",
       "-I../surfaceMeshTools/lnInclude",
-      "-I../atmosphericTurbulenceModels/lnInclude",
       "-iquote.",
       "-IlnInclude",
       "-I/app/openfoam/src/OpenFOAM/lnInclude",
@@ -42,11 +33,11 @@
       "-fPIC",
       "-c",
       "-o",
-      "Make/linux64GccDPInt32Opt/treeModel/canopyModel/canopyModel/canopyModel.o",
-      "treeModel/canopyModel/canopyModel/canopyModel.C"
+      "Make/linux64GccDPInt32Opt/radiationModels/absorptionEmissionModels/binaryWideBand/binaryWideBand.o",
+      "radiationModels/absorptionEmissionModels/binaryWideBand/binaryWideBand.C"
     ],
     "directory": "/scratch365/swang18/Workspace/Projects/CROCUS/CROCUS-UES3/code/src/urbanModels",
-    "file": "/scratch365/swang18/Workspace/Projects/CROCUS/CROCUS-UES3/code/src/urbanModels/treeModel/canopyModel/canopyModel/canopyModel.C",
-    "output": "/scratch365/swang18/Workspace/Projects/CROCUS/CROCUS-UES3/code/src/urbanModels/Make/linux64GccDPInt32Opt/treeModel/canopyModel/canopyModel/canopyModel.o"
+    "file": "/scratch365/swang18/Workspace/Projects/CROCUS/CROCUS-UES3/code/src/urbanModels/radiationModels/absorptionEmissionModels/binaryWideBand/binaryWideBand.C",
+    "output": "/scratch365/swang18/Workspace/Projects/CROCUS/CROCUS-UES3/code/src/urbanModels/Make/linux64GccDPInt32Opt/radiationModels/absorptionEmissionModels/binaryWideBand/binaryWideBand.o"
   }
 ]

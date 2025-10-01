@@ -27,6 +27,8 @@ Description
     A base class for vegetation related models based on fvModel, such that 
     IO and interface with the equations can be handled through fvModels in 
     a centralized manner
+
+    Trunks are disabled for now
     
 SourceFiles
     treeModel.C
@@ -37,7 +39,6 @@ SourceFiles
 #include "fvCFD.H"
 #include "canopyModel.H"
 #include "trunkModel.H"
-#include "fluidAtmThermo.H"
 
 namespace Foam
 {
@@ -56,10 +57,7 @@ class treeModel
     
         //- Pointers to components of trees
         autoPtr<canopyModel> canopy_;
-        autoPtr<trunkModel>  trunk_;
-
-        //- Reference to embedded models
-        fluidAtmThermo& thermo_;
+        // autoPtr<trunkModel>  trunk_;
 
     // Private Member Functions
 
@@ -96,11 +94,8 @@ public:
     canopyModel& canopy() {return canopy_();}
     const canopyModel& canopy() const {return canopy_();}
 
-    trunkModel& trunk() {return trunk_();}
-    const trunkModel& trunk() const {return trunk_();}
-
-    fluidAtmThermo& thermo() {return thermo_;}
-    const fluidAtmThermo& thermo() const {return thermo_;}
+    // trunkModel& trunk() {return trunk_();}
+    // const trunkModel& trunk() const {return trunk_();}
 };
 
 }

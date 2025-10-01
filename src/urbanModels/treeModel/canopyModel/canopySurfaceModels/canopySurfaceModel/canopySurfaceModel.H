@@ -49,26 +49,25 @@ class canopySurfaceModel
     
     // Private Member Data
         //- Surface Model dictionary
-        dictionary      surfaceModelDict_;
         
         //- cell list influenced by the canopy
         labelHashSet     canopyCellsIndex_;
 
         //- Leaf area density
-        dimensionedVectorCellSet lad_;
+        volScalarField lad_;
         
         //- Total Leaf Area
-        dimensionedScalarCellSet la_;
+        volScalarField la_;
 
         //- Total Sunlit Leaf Area
-        dimensionedScalarCellSet laLit_;
+        volScalarField laLit_;
 
         //- Leaf coverage ratio for each cell (between 0 and 1);
-        dimensionedScalarCellSet laCov_;
+        volScalarField laCov_;
 
         //- Cell-Averaged Leave Diameter
         // Note: Currently assume all leaves are spherical!!
-        dimensionedScalarCellSet ldia_;
+        volScalarField ldia_;
         
     // Private Member Functions
 
@@ -90,7 +89,6 @@ public:
 
         // Access
             //- reference to the surface model dict
-            virtual const dictionary& surfaceModelDict() const {return surfaceModelDict_;}
 
         // Parameters for all types of analysis
 
@@ -98,25 +96,25 @@ public:
             virtual const labelHashSet& canopyCells() const {return canopyCellsIndex_;};
             virtual labelHashSet& canopyCells()  {return canopyCellsIndex_;};
             //- reference to leaf area density
-            virtual dimensionedVectorCellSet& lad() {return lad_;};
-            virtual const dimensionedVectorCellSet& lad() const {return lad_;};
+            virtual volScalarField& lad() {return lad_;};
+            virtual const volScalarField& lad() const {return lad_;};
 
-            virtual dimensionedScalarCellSet& la() {return la_;};
-            virtual const dimensionedScalarCellSet& la() const {return la_;};
+            virtual volScalarField& la() {return la_;};
+            virtual const volScalarField& la() const {return la_;};
 
-            virtual dimensionedScalarCellSet& laLit() {return laLit_;};
-            virtual const dimensionedScalarCellSet& laLit() const {return laLit_;};
-            virtual dimensionedScalarCellSet& laCov() {return laCov_;};
-            virtual const dimensionedScalarCellSet& laCov() const {return laCov_;};
+            virtual volScalarField& laLit() {return laLit_;};
+            virtual const volScalarField& laLit() const {return laLit_;};
+            virtual volScalarField& laCov() {return laCov_;};
+            virtual const volScalarField& laCov() const {return laCov_;};
             
-            virtual dimensionedScalarCellSet& ldia() {return ldia_;};
-            virtual const dimensionedScalarCellSet& ldia() const {return ldia_;};
+            virtual volScalarField& ldia() {return ldia_;};
+            virtual const volScalarField& ldia() const {return ldia_;};
 
         // Correction functions
-            virtual dimensionedScalarCellSet correctLaCov
+            virtual volScalarField correctLaCov
             (
               vector direction
-            ) = 0;
+            ){return laCov_;};
 };
 }
 

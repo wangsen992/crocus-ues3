@@ -1,0 +1,5 @@
+#!/bin/bash
+
+wmake utilityFuncs
+wmake surfaceMeshTools
+wmaek urbanModels

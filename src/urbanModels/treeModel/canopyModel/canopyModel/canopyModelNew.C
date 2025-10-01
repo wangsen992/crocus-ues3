@@ -12,7 +12,7 @@ autoPtr<canopyModel> canopyModel::New
 {
     word canopyModelType(tree.dict().subDict("canopy").lookup("type"));
 
-    treeModelConstructorTable::iterator cstrIter = 
+    auto cstrIter = 
         treeModelConstructorTablePtr_->find(canopyModelType);
 
     if (cstrIter == treeModelConstructorTablePtr_->end())

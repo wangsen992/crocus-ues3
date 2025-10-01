@@ -59,7 +59,7 @@ class treeModelList
         // Tree-relevant volField variables that should be registered.
 
             // Leaf are density vector
-            volVectorField  lad_;
+            volScalarField  lad_;
 
             // Leaf are density vector
             volScalarField  Tleaf_;
@@ -98,8 +98,8 @@ public:
         word treeType(){return type_;};
         dictionary dict(){return treeModelListDict_;};
 
-        volVectorField& lad(){return lad_;};
-        const volVectorField& lad() const {return lad_;};
+        volScalarField& lad(){return lad_;};
+        const volScalarField& lad() const {return lad_;};
 
         volScalarField& a(){return aTree_;};
         const volScalarField& a() const {return aTree_;};

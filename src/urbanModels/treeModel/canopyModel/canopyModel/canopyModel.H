@@ -41,7 +41,7 @@ SourceFiles
 #ifndef canopyModel_H
 #define canopyModel_H
 
-#include "fvCFD.H"
+#include "volFieldsFwd.H"
 #include "runTimeSelectionTables.H"
 
 #include "cellSetHashTables.H"
@@ -119,48 +119,47 @@ public:
         // Access to surface / geoemtry related properties
 
             //- cellLabels
-            virtual const dictionary& surfaceModelDict() const = 0 ;
 
             virtual const labelHashSet& canopyCells() const = 0;
             virtual labelHashSet& canopyCells() = 0;
 
-            virtual const dimensionedVectorCellSet& lad() const = 0;
-            virtual dimensionedVectorCellSet& lad() = 0;
-            virtual const dimensionedScalarCellSet& la() const = 0;
-            virtual dimensionedScalarCellSet& la() = 0;
-            virtual const dimensionedScalarCellSet& laLit() const = 0;
-            virtual dimensionedScalarCellSet& laLit() = 0;
-            virtual const dimensionedScalarCellSet& ldia() const = 0;
-            virtual dimensionedScalarCellSet& ldia() = 0;
+            virtual const volScalarField& lad() const = 0;
+            virtual volScalarField& lad() = 0;
+            virtual const volScalarField& la() const = 0;
+            virtual volScalarField& la() = 0;
+            virtual const volScalarField& laLit() const = 0;
+            virtual volScalarField& laLit() = 0;
+            virtual const volScalarField& ldia() const = 0;
+            virtual volScalarField& ldia() = 0;
 
-            virtual dimensionedScalarCellSet correctLaCov(vector direction)=0;
+            virtual volScalarField correctLaCov(vector direction)=0;
         // Momentum
 
             //- Return the source term to momentumTransport
-            virtual dimensionedVectorCellSet& Fu() = 0;
-            virtual const dimensionedVectorCellSet& Fu() const = 0;
-            virtual dimensionedScalarCellSet& Fturb(const word&) = 0;
-            virtual const dimensionedScalarCellSet& Fturb(const word&) const = 0;
+            virtual volVectorField& Fu() = 0;
+            virtual const volVectorField& Fu() const = 0;
+            virtual volScalarField& Fturb(const word&) = 0;
+            virtual const volScalarField& Fturb(const word&) const = 0;
             virtual void correctMomentumTransfer() = 0;
             //
          // Energy
             //- Return the source term to Energy
-            virtual dimensionedScalarCellSet& Fhe() = 0;
-            virtual const dimensionedScalarCellSet& Fhe() const = 0;
-            virtual dimensionedScalarCellSet& Fq() = 0;
-            virtual const dimensionedScalarCellSet& Fq() const = 0;
+            virtual volScalarField& FT() = 0;
+            virtual const volScalarField& FT() const = 0;
+            virtual volScalarField& Fq() = 0;
+            virtual const volScalarField& Fq() const = 0;
 
             //- Thermo related
-            virtual dimensionedScalarCellSet& Tleaf() = 0;
-            virtual const dimensionedScalarCellSet& Tleaf() const = 0;
+            virtual volScalarField& Tleaf() = 0;
+            virtual const volScalarField& Tleaf() const = 0;
 
             //- Radiation related 
-            virtual dimensionedScalarCellSet& a() = 0;
-            virtual const dimensionedScalarCellSet& a() const = 0;
-            virtual dimensionedScalarCellSet& e() = 0;
-            virtual const dimensionedScalarCellSet& e() const = 0;
-            virtual dimensionedScalarCellSet& E() = 0;
-            virtual const dimensionedScalarCellSet& E() const = 0;
+            virtual volScalarField& a() = 0;
+            virtual const volScalarField& a() const = 0;
+            virtual volScalarField& e() = 0;
+            virtual const volScalarField& e() const = 0;
+            virtual volScalarField& E() = 0;
+            virtual const volScalarField& E() const = 0;
 
             virtual void correctEnergyTransfer() = 0;
 

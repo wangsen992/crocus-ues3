@@ -35,11 +35,9 @@ SourceFiles
 #define canopyMomentumTransferModel_H
 
 #include "treeModel.H"
-#include "dynamicMomentumTransportModel.H"
 
 // typedefs
 
-typedef compressible::momentumTransportModel momentumTransportModel;
 
 namespace Foam
 {
@@ -63,7 +61,7 @@ protected:
         volVectorField& U_;
 
         //- Holding values for the drag force term
-        dimensionedVectorCellSet Fu_;
+        volVectorField Fu_;
 
 
     // Private Function
@@ -85,10 +83,15 @@ public:
     const volVectorField& U() const {return U_;}
     scalar Cd(){return Cd_;}
     dictionary& momentumTransferDict(){return momentumTransferDict_;}
-    virtual dimensionedVectorCellSet& Fu(){return Fu_;};
-    virtual dimensionedScalarCellSet& Fturb(const word&);
-    virtual const dimensionedScalarCellSet& Fturb(const word&) const;
-    virtual const dimensionedVectorCellSet& Fu() const {return Fu_;};
+    virtual volVectorField& Fu()
+    {
+      Info << "Running Fu" << endl;
+      Info << "[debug] Fu average: " << average(Fu_) << endl;
+      return Fu_;
+    };
+    virtual volScalarField& Fturb(const word&);
+    virtual const volScalarField& Fturb(const word&) const;
+    virtual const volVectorField& Fu() const {return Fu_;};
     virtual void correctMomentumTransfer();
 
     

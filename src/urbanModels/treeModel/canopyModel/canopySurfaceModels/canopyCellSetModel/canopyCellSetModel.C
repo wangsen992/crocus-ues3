@@ -75,7 +75,7 @@ void canopyCellSetModel<BaseCanopyModel>::init()
 
     // constant properties assigned to all tree cells
     dimensionedScalar la(dimArea/dimVolume, this->surfaceModelDict().lookupOrDefault("la", 0.2));
-    dimensionedVector lad(dimArea/dimVolume, this->surfaceModelDict().lookupOrDefault("lad", vector(1,1,1)));
+    dimensionedScalar lad(dimArea/dimVolume, this->surfaceModelDict().lookupOrDefault("lad", 1));
     dimensionedScalar ldia(dimArea/dimVolume, this->surfaceModelDict().lookupOrDefault("ldia", 1));
     dimensionedScalar laLit(dimArea/dimVolume, this->surfaceModelDict().lookupOrDefault("laLit", 1));
     dimensionedScalar laCov(dimArea/dimVolume, this->surfaceModelDict().lookupOrDefault("laCov",1));
@@ -96,7 +96,7 @@ canopyCellSetModel<BaseCanopyModel>::canopyCellSetModel
 )
 :
     canopySurfaceModel<BaseCanopyModel>(tree),
-    set_(tree.mesh(), "c0")
+    set_(tree.mesh(), "c0") // load the cellSet
 {
     init();
     // Testing find lalit

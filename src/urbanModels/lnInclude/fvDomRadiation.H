@@ -1,1 +1,1 @@
-../fvModels/fvDom/fvDomRadiation.H
+../fvOptions/fvDom/fvDomRadiation.H

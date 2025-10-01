@@ -26,6 +26,8 @@ Class
 \*---------------------------------------------------------------------------*/
 
 #include "canopySurfaceModel.H"
+#include "dimensionSets.H"
+#include "zero.H"
 
 namespace Foam
 {
@@ -37,12 +39,72 @@ canopySurfaceModel<BaseCanopyModel>::canopySurfaceModel
 )
 :
     BaseCanopyModel(tree),
-    surfaceModelDict_(BaseCanopyModel::dict().subDict("surface")),
     canopyCellsIndex_(),
-    lad_(),
-    la_(),
-    laLit_(),
-    ldia_()
+    lad_
+    (
+      IOobject
+      (
+        "canopy_lad",
+        tree.mesh().time().constant(),
+        tree.mesh(),
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+      ),
+      tree.mesh(),
+      dimensionedScalar(dimArea/dimVol, 0)
+     ),
+    la_
+    (
+      IOobject
+      (
+        "canopy_la",
+        tree.mesh().time().constant(),
+        tree.mesh(),
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+      ),
+      tree.mesh(),
+      dimensionedScalar(dimArea/dimVol, 0)
+    ),
+    laLit_
+    (
+      IOobject
+      (
+        "canopy_laLit",
+        tree.mesh().time().constant(),
+        tree.mesh(),
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+      ),
+      tree.mesh(),
+      dimensionedScalar(dimArea/dimVol, 0)
+    ),
+    laCov_
+    (
+      IOobject
+      (
+        "canopy_laCov",
+        tree.mesh().time().constant(),
+        tree.mesh(),
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+      ),
+      tree.mesh(),
+      dimensionedScalar(dimless, 0)
+    ),
+    ldia_
+    (
+      IOobject
+      (
+        "canopy_ldia",
+        tree.mesh().time().constant(),
+        tree.mesh(),
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+      ),
+      tree.mesh(),
+      dimensionedScalar(dimLength, 0)
+    )
 {
 };
 

@@ -44,7 +44,7 @@ SourceFiles
 
 namespace Foam
 {
-namespace radiationModels
+namespace radiation
 {
 namespace absorptionEmissionModels
 {

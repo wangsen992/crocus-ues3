@@ -24,35 +24,12 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "energyBalanceHeatFluxTemperatureFvPatchScalarField.H"
+#include "mathematicalConstants.H"
 #include "volFields.H"
 #include "physicoChemicalConstants.H"
 #include "addToRunTimeSelectionTable.H"
 
 using Foam::constant::physicoChemical::sigma;
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-namespace Foam
-{
-    template<>
-    const char*
-    NamedEnum
-    <
-        energyBalanceHeatFluxTemperatureFvPatchScalarField::operationMode,
-        3
-    >::names[] =
-    {
-        "power",
-        "flux",
-        "coefficient"
-    };
-}
-
-const Foam::NamedEnum
-<
-    Foam::energyBalanceHeatFluxTemperatureFvPatchScalarField::operationMode,
-    3
-> Foam::energyBalanceHeatFluxTemperatureFvPatchScalarField::operationModeNames;
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
@@ -83,8 +60,16 @@ energyBalanceHeatFluxTemperatureFvPatchScalarField
     mixedFvPatchScalarField(p, iF)
 {
 
-    fvPatchScalarField::operator=(scalarField("value", dict, p.size()));
-
+    if(dict.found("value"))
+    {
+      fvPatchScalarField::operator=(scalarField("value", dict, p.size()));
+    }
+    else
+    {
+      fvPatchScalarField::operator=(this->patchInternalField());
+    }
+    
+    
     if (dict.found("refValue"))
     {
         // Full restart
@@ -163,20 +148,25 @@ void Foam::energyBalanceHeatFluxTemperatureFvPatchScalarField::updateCoeffs()
     const scalarField refValue0(refValue());
 
     scalarField qr(Tp.size(), 0);
+    scalarField qin(Tp.size(), 0);
+    scalarField qem(Tp.size(), 0);
     scalarField alphat(Tp.size(), 0);
     scalarField rho(Tp.size(), 0);
-    scalarField Cp(Tp.size(), 0);
+    scalarField Cp(Tp.size(), 1000);
     scalarField qEff(Tp.size(), 0);
     // qr =
     //    patch().lookupPatchField<volScalarField, scalar>
     //    (
     //      IOobject::groupName("qr", internalField().group())
     //    );
-    qr =
-       patch().lookupPatchField<volScalarField, scalar>
-       (
-         "qr"
-       );
+    qr  = patch().lookupPatchField<volScalarField, scalar> ( "qr");
+    qin = patch().lookupPatchField<volScalarField, scalar> ( "qin");
+    qem = patch().lookupPatchField<volScalarField, scalar> ( "qem");
+    Info << "[Debug] average(qin) = " << gAverage(qin) << endl;
+    Info << "[Debug] average(qem) = " << gAverage(qem) << endl;
+    Info << "[Debug] average(qin + qem) = " << gAverage(qin + qem) << endl;
+    Info << "[Debug] average(qin - qem) = " << gAverage(qin - qem) << endl;
+    Info << "[Debug] average(qr) = " << gAverage(qr) << endl;
     // alphat = 
     //     patch().lookupPatchField<volScalarField, scalar>
     //     (
@@ -187,23 +177,19 @@ void Foam::energyBalanceHeatFluxTemperatureFvPatchScalarField::updateCoeffs()
     //     (
     //       IOobject::groupName("rho", internalField().group())
     //     );
-    rho = 
-        patch().lookupPatchField<volScalarField, scalar>
-        (
-          "rho"
-        );
-    Cp = 
-        patch().lookupPatchField<volScalarField, scalar>
-        (
-          IOobject::groupName("Cp", internalField().group())
-        );
-    qEff = rho * Cp 
+    // Cp = 
+    //     patch().lookupPatchField<volScalarField, scalar>
+    //     (
+    //       IOobject::groupName("Cp", internalField().group())
+    //     );
+    qEff = Cp 
           * 
             (this->refValue() - this->patchInternalField()) 
           / this->patch().deltaCoeffs();
 
     refGrad() = 0.0;
-    refValue() += (qr - qEff) / (2400 * 0.1 * 880);
+    refValue() += (- qr - qEff) / (2400 * 0.1 * 880);
+    // refValue() += (qin + qem) / (2400 * 0.1 * 880);
     valueFraction() = 1.0;
 
     mixedFvPatchScalarField::updateCoeffs();
@@ -221,10 +207,11 @@ void Foam::energyBalanceHeatFluxTemperatureFvPatchScalarField::write
 {
     fvPatchScalarField::write(os);
 
-    writeEntry(os, "refValue", refValue());
-    writeEntry(os, "refGradient", refGrad());
-    writeEntry(os, "valueFraction", valueFraction());
-    writeEntry(os, "value", *this);
+    // writeEntry(os, "refValue", refValue());
+    // writeEntry(os, "refGradient", refGrad());
+    // writeEntry(os, "valueFraction", valueFraction());
+    // writeEntry(os, "value", *this);
+    // os.writeEntry("value", *this);
 }
 
 

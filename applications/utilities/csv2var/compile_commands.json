@@ -1,0 +1,39 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-std=c++17",
+      "-m64",
+      "-pthread",
+      "-DOPENFOAM=2412",
+      "-DWM_DP",
+      "-DWM_LABEL_SIZE=32",
+      "-Wall",
+      "-Wextra",
+      "-Wold-style-cast",
+      "-Wnon-virtual-dtor",
+      "-Wno-unused-parameter",
+      "-Wno-invalid-offsetof",
+      "-Wno-attributes",
+      "-Wno-unknown-pragmas",
+      "-O3",
+      "-DNoRepository",
+      "-ftemplate-depth-100",
+      "-I/app/openfoam/src/OpenFOAM/lnInclude",
+      "-I/app/openfoam/src/finiteVolume/lnInclude",
+      "-I/app/openfoam/src/meshTools/lnInclude",
+      "-iquote.",
+      "-IlnInclude",
+      "-I/app/openfoam/src/OpenFOAM/lnInclude",
+      "-I/app/openfoam/src/OSspecific/POSIX/lnInclude",
+      "-fPIC",
+      "-c",
+      "-o",
+      "Make/linux64GccDPInt32Opt/csv2var.o",
+      "csv2var.C"
+    ],
+    "directory": "/scratch365/swang18/Workspace/Projects/CROCUS/CROCUS-UES3/code/applications/utilities/csv2var",
+    "file": "/scratch365/swang18/Workspace/Projects/CROCUS/CROCUS-UES3/code/applications/utilities/csv2var/csv2var.C",
+    "output": "/scratch365/swang18/Workspace/Projects/CROCUS/CROCUS-UES3/code/applications/utilities/csv2var/Make/linux64GccDPInt32Opt/csv2var.o"
+  }
+]

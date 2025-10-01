@@ -45,12 +45,11 @@ Foam::treeModel::treeModel
     canopy_
     (
       canopyModel::New(*this)
-    ),
-    trunk_
-    (
-      trunkModel::New(*this)
     )
-    thermo_(mesh_.lookupObjectRef<fluidAtmThermo>(fluidAtmThermo::dictName))
+    // trunk_
+    // (
+    //   trunkModel::New(*this)
+    // )
 {
 }
     

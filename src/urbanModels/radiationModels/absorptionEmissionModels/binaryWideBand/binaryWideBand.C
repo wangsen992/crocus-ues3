@@ -30,7 +30,7 @@ License
 
 namespace Foam
 {
-namespace radiationModels
+namespace radiation
 {
 namespace absorptionEmissionModels
 {
@@ -49,7 +49,7 @@ namespace absorptionEmissionModels
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::radiationModels::absorptionEmissionModels::binaryWideBand::binaryWideBand
+Foam::radiation::absorptionEmissionModels::binaryWideBand::binaryWideBand
 (
     const dictionary& dict,
     const fvMesh& mesh
@@ -70,14 +70,14 @@ Foam::radiationModels::absorptionEmissionModels::binaryWideBand::binaryWideBand
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::radiationModels::absorptionEmissionModels::binaryWideBand::~binaryWideBand()
+Foam::radiation::absorptionEmissionModels::binaryWideBand::~binaryWideBand()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 Foam::tmp<Foam::volScalarField>
-Foam::radiationModels::absorptionEmissionModels::binaryWideBand::aCont
+Foam::radiation::absorptionEmissionModels::binaryWideBand::aCont
 (
     const label bandI
 ) const
@@ -87,7 +87,7 @@ Foam::radiationModels::absorptionEmissionModels::binaryWideBand::aCont
 
 
 Foam::tmp<Foam::volScalarField>
-Foam::radiationModels::absorptionEmissionModels::binaryWideBand::aDisp
+Foam::radiation::absorptionEmissionModels::binaryWideBand::aDisp
 (
     const label bandI
 ) const
@@ -97,7 +97,7 @@ Foam::radiationModels::absorptionEmissionModels::binaryWideBand::aDisp
 
 
 Foam::tmp<Foam::volScalarField>
-Foam::radiationModels::absorptionEmissionModels::binaryWideBand::eCont
+Foam::radiation::absorptionEmissionModels::binaryWideBand::eCont
 (
     const label bandI
 ) const
@@ -107,7 +107,7 @@ Foam::radiationModels::absorptionEmissionModels::binaryWideBand::eCont
 
 
 Foam::tmp<Foam::volScalarField>
-Foam::radiationModels::absorptionEmissionModels::binaryWideBand::eDisp
+Foam::radiation::absorptionEmissionModels::binaryWideBand::eDisp
 (
     const label bandI
 ) const
@@ -117,7 +117,7 @@ Foam::radiationModels::absorptionEmissionModels::binaryWideBand::eDisp
 
 
 Foam::tmp<Foam::volScalarField>
-Foam::radiationModels::absorptionEmissionModels::binaryWideBand::ECont
+Foam::radiation::absorptionEmissionModels::binaryWideBand::ECont
 (
     const label bandI
 ) const
@@ -127,7 +127,7 @@ Foam::radiationModels::absorptionEmissionModels::binaryWideBand::ECont
 
 
 Foam::tmp<Foam::volScalarField>
-Foam::radiationModels::absorptionEmissionModels::binaryWideBand::EDisp
+Foam::radiation::absorptionEmissionModels::binaryWideBand::EDisp
 (
     const label bandI
 ) const
@@ -135,7 +135,7 @@ Foam::radiationModels::absorptionEmissionModels::binaryWideBand::EDisp
     return model1_->EDisp(bandI) + model2_->EDisp(bandI);
 }
 
-void Foam::radiationModels::absorptionEmissionModels::binaryWideBand::correct
+void Foam::radiation::absorptionEmissionModels::binaryWideBand::correct
 (
     volScalarField& a,
     PtrList<volScalarField>& aLambda

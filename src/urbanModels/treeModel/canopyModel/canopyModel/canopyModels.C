@@ -38,105 +38,127 @@ SourceFiles
     canopyModel.C
 \*---------------------------------------------------------------------------*/
 
-#include "canopyModel.H"
-// #include "canopySurfaceModel.H"
-#include "canopyTriSurfaceModel.H"
-#include "canopyKEpsilonModel.H"
-
-#include "canopyEnergyTransferModel.H"
-
-#include "canopyMomentumTransferModel.H"
-#include "compressibleMomentumTransportModel.H"
 #include "addToRunTimeSelectionTable.H"
+#include "canopyModel.H"
+#include "canopySurfaceModel.H"
+// #include "canopyTriSurfaceModel.H"
+// #include "canopyCellSetModel.H"
+#include "canopyMomentumTransferModel.H"
+#include "canopyEnergyTransferModel.H"
+// #include "canopyKEpsilonModel.H"
 
-#include "HiraokakEpsSourceModel.H"
-#include "canopyCellSetModel.H"
+// 
+// #include "compressibleMomentumTransportModel.H"
+// #include "addToRunTimeSelectionTable.H"
+
+// #include "HiraokakEpsSourceModel.H"
 
 namespace Foam
 {
-// Basic drag model without turbulence source terms
+// Basic drag model without turbulence source terms with triSurface
+// typedef canopyEnergyTransferModel
+//   <
+//     canopyMomentumTransferModel
+//     <
+//       canopyTriSurfaceModel
+//       <
+//         canopyModel
+//       >    
+//     >
+//   > 
+//     triSurfaceDragCanopyModel;
+// 
+// addNamedToRunTimeSelectionTable
+// (
+//   canopyModel, 
+//   triSurfaceDragCanopyModel, 
+//   treeModel, 
+//   triSurfaceDragCanopyModel
+// );
+
+// Basic drag model without turbulence source terms with cellSet
 typedef canopyEnergyTransferModel
   <
     canopyMomentumTransferModel
     <
-      canopyTriSurfaceModel
+      canopySurfaceModel
       <
         canopyModel
       >    
     >
   > 
-    triSurfaceDragCanopyModel;
+    surfaceDragCanopyModel;
 
 addNamedToRunTimeSelectionTable
 (
   canopyModel, 
-  triSurfaceDragCanopyModel, 
+  surfaceDragCanopyModel, 
   treeModel, 
-  triSurfaceDragCanopyModel
+  surfaceDragCanopyModel
 );
 
-// Drag model with Hiraoka model for RAS model correction
-typedef
-  canopyEnergyTransferModel
-  <
-    canopyKEpsilonModel
-    <
-      canopyTriSurfaceModel
-      <
-        canopyModel
-      >, 
-      HiraokakEpsSourceModel
-    >
-  > 
-    triSurfaceKEpsilonCanopyModel;
-
-addNamedToRunTimeSelectionTable
-(
-  canopyModel, 
-  triSurfaceKEpsilonCanopyModel, 
-  treeModel, 
-  triSurfaceKEpsilonCanopyModel
-);
-
-typedef canopyEnergyTransferModel
-  <
-    canopyMomentumTransferModel
-    <
-      canopyCellSetModel
-      <
-        canopyModel
-      >    
-    >
-  > 
-    cellSetDragCanopyModel;
-
-addNamedToRunTimeSelectionTable
-(
-  canopyModel, 
-  cellSetDragCanopyModel, 
-  treeModel, 
-  cellSetDragCanopyModel
-);
-
-typedef
-  canopyEnergyTransferModel
-  <
-    canopyKEpsilonModel
-    <
-      canopyCellSetModel
-      <
-        canopyModel
-      >, 
-      HiraokakEpsSourceModel
-    >
-  > 
-    cellSetKEpsilonCanopyModel;
-
-addNamedToRunTimeSelectionTable
-(
-  canopyModel, 
-  cellSetKEpsilonCanopyModel,
-  treeModel, 
-  cellSetKEpsilonCanopyModel
-);
+// // Drag model with Hiraoka model for RAS model correction
+// typedef
+//   canopyEnergyTransferModel
+//   <
+//     canopyKEpsilonModel
+//     <
+//       canopyTriSurfaceModel
+//       <
+//         canopyModel
+//       >, 
+//       HiraokakEpsSourceModel
+//     >
+//   > 
+//     triSurfaceKEpsilonCanopyModel;
+// 
+// addNamedToRunTimeSelectionTable
+// (
+//   canopyModel, 
+//   triSurfaceKEpsilonCanopyModel, 
+//   treeModel, 
+//   triSurfaceKEpsilonCanopyModel
+// );
+// 
+// typedef canopyEnergyTransferModel
+//   <
+//     canopyMomentumTransferModel
+//     <
+//       canopyCellSetModel
+//       <
+//         canopyModel
+//       >    
+//     >
+//   > 
+//     cellSetDragCanopyModel;
+// 
+// addNamedToRunTimeSelectionTable
+// (
+//   canopyModel, 
+//   cellSetDragCanopyModel, 
+//   treeModel, 
+//   cellSetDragCanopyModel
+// );
+// 
+// typedef
+//   canopyEnergyTransferModel
+//   <
+//     canopyKEpsilonModel
+//     <
+//       canopyCellSetModel
+//       <
+//         canopyModel
+//       >, 
+//       HiraokakEpsSourceModel
+//     >
+//   > 
+//     cellSetKEpsilonCanopyModel;
+// 
+// addNamedToRunTimeSelectionTable
+// (
+//   canopyModel, 
+//   cellSetKEpsilonCanopyModel,
+//   treeModel, 
+//   cellSetKEpsilonCanopyModel
+// );
 }

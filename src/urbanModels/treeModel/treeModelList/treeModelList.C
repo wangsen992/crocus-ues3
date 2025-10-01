@@ -54,7 +54,7 @@ treeModelList::treeModelList
     PtrList<treeModel>(),
     mesh_(mesh),
     treeModelListDict_(treeModelListDict),
-    name_(treeModelListDict_.lookup<word>("name")),
+    name_(treeModelListDict_.lookup("name")),
     type_
     (
       treeModelListDict_.lookupOrDefault
@@ -74,7 +74,7 @@ treeModelList::treeModelList
         IOobject::AUTO_WRITE
       ),
       mesh,
-      dimensionedVector(dimArea/dimVolume, vector(0, 0, 0))
+      dimensionedScalar(dimArea/dimVolume, 0)
     ),
     Tleaf_
     (
@@ -142,13 +142,13 @@ void treeModelList::correct()
     treeModel& treei(*iter);
     treei.canopy().correctMomentumTransfer();
     treei.canopy().correctEnergyTransfer();
-    forAllConstIter(dimensionedVectorCellSet, treei.canopy().lad(), jter)
+    forAll(treei.canopy().lad(), j)
     {
-        lad_[jter.key()] = treei.canopy().lad()[jter.key()].value();
-        Tleaf_[jter.key()] = treei.canopy().Tleaf()[jter.key()].value();
-        aTree_[jter.key()] = treei.canopy().a()[jter.key()].value();
-        eTree_[jter.key()] = treei.canopy().e()[jter.key()].value();
-        ETree_[jter.key()] = treei.canopy().E()[jter.key()].value();
+        lad_[j] = treei.canopy().lad()[j];
+        Tleaf_[j] = treei.canopy().Tleaf()[j];
+        aTree_[j] = treei.canopy().a()[j];
+        eTree_[j] = treei.canopy().e()[j];
+        ETree_[j] = treei.canopy().E()[j];
     }
     Info << "Correcting tree 1 complete" << endl;
   }

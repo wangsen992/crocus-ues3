@@ -27,7 +27,7 @@ License
 
 namespace Foam
 {
-namespace radiationModels
+namespace radiation
 {
 namespace absorptionEmissionModels
 {
@@ -68,7 +68,7 @@ tmp<volScalarField> canopy::aDisp(const label bandI) const
     
     if (bandI == 0)
     {
-      ta.ref() = mesh().lookupObjectRef<volScalarField>("aTree");
+      ta.ref() = mesh().lookupObjectRef<volScalarField>("canopy_a");
     }
 
     return ta;
@@ -88,7 +88,7 @@ tmp<volScalarField> canopy::eDisp(const label bandI) const
 
     if (bandI == 1)
     {
-      te.ref() = mesh().lookupObjectRef<volScalarField>("eTree");
+      te.ref() = mesh().lookupObjectRef<volScalarField>("canopy_e");
     }
 
     return te;
@@ -108,7 +108,7 @@ tmp<volScalarField> canopy::EDisp(const label bandI) const
 
     if (bandI == 1)
     {
-      tE.ref() = mesh().lookupObjectRef<volScalarField>("ETree");
+      tE.ref() = mesh().lookupObjectRef<volScalarField>("canopy_E");
     }
     return tE;
 }

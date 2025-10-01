@@ -38,7 +38,7 @@ SourceFiles
 #define canopyEnergyTransferModel_H
 
 #include "treeModel.H"
-#include "fluidAtmThermo.H"
+// #include "fluidAtmThermo.H"
 #include "radiationModel.H"
 #include "fvDOM.H"
 #include "cellSetHashTables.H"
@@ -58,41 +58,38 @@ protected:
         //- Dictionary for momentumTransfer
         dictionary energyTransferDict_;
 
-        //- Reference to fluidAtmThermo
-        fluidAtmThermo& thermo_;
-
         //- Reference to Radiation model
-        radiationModel& radiation_;
-        radiationModels::fvDOM& dom_;
+        // radiation::radiationModel& radiation_;
+        // radiation::fvDOM& dom_;
 
 
-        dimensionedScalarCellSet Fhe_;
-        dimensionedScalarCellSet Fq_;
+        volScalarField FT_;
+        volScalarField Fq_;
 
         // Radiation related
-        dimensionedScalarCellSet a_;
-        dimensionedScalarCellSet e_;
-        dimensionedScalarCellSet E_;
+        volScalarField a_;
+        volScalarField e_;
+        volScalarField E_;
 
         //- Properties of leaves of cell
         
           // Temperature of leaves
-          dimensionedScalarCellSet  Tleaf_;
+          volScalarField  Tleaf_;
           
           // Heat capacity of leaves
-          dimensionedScalarCellSet  Cleaf_;
+          dimensionedScalar  Cleaf_;
 
           // Leaf thickness
-          dimensionedScalarCellSet  hleaf_;
+          dimensionedScalar  hleaf_;
 
           // Leaf density
-          dimensionedScalarCellSet  rholeaf_;
+          dimensionedScalar  rholeaf_;
 
           // Leaf Aerodynamic Resistance
-          dimensionedScalarCellSet  rb_;
+          volScalarField  rb_;
 
           // Leaf Stomatal Resistance
-          dimensionedScalarCellSet  rs_;
+          volScalarField  rs_;
 
           
 
@@ -109,20 +106,20 @@ public:
     virtual ~canopyEnergyTransferModel(){};
 
     //- Member Functions
-    virtual dimensionedScalarCellSet& Fhe(){return Fhe_;};
-    virtual const dimensionedScalarCellSet& Fhe() const{return Fhe_;};
-    virtual dimensionedScalarCellSet& Fq(){return Fq_;};
-    virtual const dimensionedScalarCellSet& Fq() const{return Fq_;};
-    virtual dimensionedScalarCellSet& Tleaf() {return Tleaf_;};
-    virtual const dimensionedScalarCellSet& Tleaf() const {return Tleaf_;};
+    virtual volScalarField& FT(){return FT_;};
+    virtual const volScalarField& FT() const{return FT_;};
+    virtual volScalarField& Fq(){return Fq_;};
+    virtual const volScalarField& Fq() const{return Fq_;};
+    virtual volScalarField& Tleaf() {return Tleaf_;};
+    virtual const volScalarField& Tleaf() const {return Tleaf_;};
 
     //- Radiation related 
-    virtual dimensionedScalarCellSet& a(){return a_;};
-    virtual const dimensionedScalarCellSet& a() const{return a_;};
-    virtual dimensionedScalarCellSet& e(){return e_;};
-    virtual const dimensionedScalarCellSet& e() const{return e_;};
-    virtual dimensionedScalarCellSet& E(){return E_;};
-    virtual const dimensionedScalarCellSet& E() const{return E_;};
+    virtual volScalarField& a(){return a_;};
+    virtual const volScalarField& a() const{return a_;};
+    virtual volScalarField& e(){return e_;};
+    virtual const volScalarField& e() const{return e_;};
+    virtual volScalarField& E(){return E_;};
+    virtual const volScalarField& E() const{return E_;};
 
     virtual void correctEnergyTransfer();
 };

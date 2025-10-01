@@ -81,7 +81,6 @@ SourceFiles
 #define energyBalanceHeatFluxTemperatureFvPatchScalarField_H
 
 #include "mixedFvPatchFields.H"
-#include "temperatureCoupledBase.H"
 #include "Function1.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -108,8 +107,6 @@ public:
             fixedHeatFlux,
             fixedHeatTransferCoeff
         };
-
-        static const NamedEnum<operationMode, 3> operationModeNames;
 
 
 private:

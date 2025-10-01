@@ -25,11 +25,12 @@ Class
 \*---------------------------------------------------------------------------*/
 
 #include "canopyMomentumTransferModel.H"
+#include "dimensionSets.H"
 
 template<class BaseCanopyModel>
 void Foam::canopyMomentumTransferModel<BaseCanopyModel>::readCoeffs()
 {
-    Cd_ = momentumTransferDict_.lookup<double>("Cd");
+    Cd_ = momentumTransferDict_.get<scalar>("Cd");
 }
 
 template<class BaseCanopyModel>
@@ -42,7 +43,19 @@ Foam::canopyMomentumTransferModel<BaseCanopyModel>::canopyMomentumTransferModel
     momentumTransferDict_(BaseCanopyModel::dict().subDict("momentumTransfer")),
     Cd_(),
     U_(tree.mesh().lookupObjectRef<volVectorField>("U")),
-    Fu_(BaseCanopyModel::canopyCells().size())
+    Fu_
+    (
+      IOobject
+      (
+        "canopy_Fu",
+        tree.mesh().time().constant(),
+        tree.mesh(),
+        IOobject::NO_READ,
+        IOobject::NO_WRITE
+      ),
+      tree.mesh(),
+      dimensionedVector(dimVelocity/dimTime, vector(0,0,0))
+    )
 {
     Info << "Init in canopyMomentumTransferModel.." << endl;
     readCoeffs();
@@ -51,39 +64,18 @@ Foam::canopyMomentumTransferModel<BaseCanopyModel>::canopyMomentumTransferModel
 
 template<class BaseCanopyModel>
 void Foam::canopyMomentumTransferModel<BaseCanopyModel>::correctMomentumTransfer(){
-    vector Ui;
-    scalar magUi;
-    vector ladi;
-    label celli;
-
-    const labelHashSet& cells = BaseCanopyModel::canopyCells();
-    forAll(cells, i)
-    {
-        celli = cells.sortedToc()[i];
-        Ui = U_[celli];
-        magUi = mag(Ui);
-        ladi = BaseCanopyModel::lad()[celli].value();
-
         // Update drag force term
-        Fu_.set
-        (celli, 
-         dimensionedVector
-         (
-            dimVelocity/dimTime,
-            - Cd_ * cmptMultiply(ladi, magUi * Ui)
-         )
-        );
-    }
+        Fu_ = - Cd_ * BaseCanopyModel::lad() * mag(U_) * U_;
 }
 
 
 template<class BaseCanopyModel>
-dimensionedScalarCellSet& Foam::canopyMomentumTransferModel<BaseCanopyModel>::Fturb(const word& name)
+volScalarField& Foam::canopyMomentumTransferModel<BaseCanopyModel>::Fturb(const word& name)
 {
     NotImplemented;
 }
 template<class BaseCanopyModel>
-const dimensionedScalarCellSet& Foam::canopyMomentumTransferModel<BaseCanopyModel>::Fturb(const word& name) const
+const volScalarField& Foam::canopyMomentumTransferModel<BaseCanopyModel>::Fturb(const word& name) const
 {
     NotImplemented;
 }
