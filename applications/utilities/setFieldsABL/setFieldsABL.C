@@ -85,6 +85,19 @@ volScalarField T
     mesh
 );
 
+Info << "Reading field H2O" << endl;
+volScalarField q
+(
+    IOobject
+    (
+        "H2O",
+        runTime.timeName(),
+        mesh,
+        IOobject::MUST_READ,
+        IOobject::NO_WRITE
+    ),
+    mesh
+);
 Info << "Reading field p_rgh" << endl;
 volScalarField p_rgh
 (
@@ -207,12 +220,14 @@ scalarField zProfile(profileTable.size(),0.0);
 scalarField UProfile(profileTable.size(),0.0);
 scalarField VProfile(profileTable.size(),0.0);
 scalarField TProfile(profileTable.size(),0.0);
+scalarField qProfile(profileTable.size(),0.0);
 forAll(zProfile,i)
 {
    zProfile[i] = profileTable[i][0];
    UProfile[i] = profileTable[i][1];
    VProfile[i] = profileTable[i][2];
    TProfile[i] = profileTable[i][3];
+   qProfile[i] = profileTable[i][4];
 }
 
 // Get distance from the wall only if required.
@@ -322,7 +337,7 @@ if (updateInternalFields)
     }
 
     // Potential temperature.
-    Info << "Updating internal T field..." << endl;
+    Info << "Updating internal T and H2O field..." << endl;
     Random TRandom(1);
     forAll(T,cellI)
     {
@@ -351,10 +366,12 @@ if (updateInternalFields)
             if (tableInterpTypeT == "cubic")
             {
                 T[cellI] = interpolateSplineXY(z,zProfile,TProfile);
+                q[cellI] = interpolateSplineXY(z,zProfile,qProfile);
             }
             else
             {
                 T[cellI] = interpolateXY(z,zProfile,TProfile);
+                q[cellI] = interpolateXY(z,zProfile,qProfile);
             }
         }
 
@@ -379,6 +396,7 @@ if (updateBoundaryFields)
     Info << "Updating boundaries..." << endl;
     U.correctBoundaryConditions();
     T.correctBoundaryConditions();
+    q.correctBoundaryConditions();
     p_rgh.correctBoundaryConditions();
 }
 
@@ -388,6 +406,8 @@ Info<< "Writing field U" << endl;
 U.write();
 Info<< "Writing field T" << endl;
 T.write(); 
+Info<< "Writing field H2O" << endl;
+q.write(); 
 Info<< "Writing field p_rgh" << endl;
 p_rgh.write();
 
