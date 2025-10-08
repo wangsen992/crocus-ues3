@@ -10,7 +10,9 @@
       + turbulence->divDevReff(U)
      ==
         fvOptions(U)
-      + SourceU
+      + Source_dUdt_advec
+      + tau * (Omega ^ (U - Source_Ug))
+      + tau * (Source_U_LS - U)
     );
 
     UEqn.relax();

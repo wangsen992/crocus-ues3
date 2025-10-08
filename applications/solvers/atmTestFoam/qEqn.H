@@ -11,6 +11,8 @@
       - fvm::laplacian(alphaEff, q)
      ==
         fvOptions(q)
+      + Source_dqtdt_advec
+      + tau * (Source_qt_LS - q)
     );
 
     qEqn.relax();

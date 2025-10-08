@@ -58,6 +58,41 @@
        else
        {
           // Interpolate the source values in time and height.
+           source_dudt_advecColumn = interpolate2D(t,
+                                          hLevelsValues,
+                                          source_dudt_advecTimesSpecified,
+                                          sourceHeightsMomentumSpecified,
+                                          source_dudt_advecSpecified);
+           source_dvdt_advecColumn = interpolate2D(t,
+                                          hLevelsValues,
+                                          source_dvdt_advecTimesSpecified,
+                                          sourceHeightsMomentumSpecified,
+                                          source_dvdt_advecSpecified);
+           source_uColumn = interpolate2D(t,
+                                          hLevelsValues,
+                                          source_uTimesSpecified,
+                                          sourceHeightsMomentumSpecified,
+                                          source_uSpecified);
+           source_vColumn = interpolate2D(t,
+                                          hLevelsValues,
+                                          source_vTimesSpecified,
+                                          sourceHeightsMomentumSpecified,
+                                          source_vSpecified);
+           source_wColumn = interpolate2D(t,
+                                          hLevelsValues,
+                                          source_wTimesSpecified,
+                                          sourceHeightsMomentumSpecified,
+                                          source_wSpecified);
+           source_ugColumn = interpolate2D(t,
+                                          hLevelsValues,
+                                          source_ugTimesSpecified,
+                                          sourceHeightsMomentumSpecified,
+                                          source_ugSpecified);
+           source_vgColumn = interpolate2D(t,
+                                          hLevelsValues,
+                                          source_vgTimesSpecified,
+                                          sourceHeightsMomentumSpecified,
+                                          source_vgSpecified);
            sourceUXColumn = interpolate2D(t,
                                           hLevelsValues,
                                           sourceMomentumXTimesSpecified,
@@ -87,6 +122,20 @@
                    s.z() = sourceUZColumn[level];
 
                    SourceU[hLevelsCellList[level][i]] = s;
+
+                   s.x() = source_dudt_advecColumn[level];
+                   s.y() = source_dudt_advecColumn[level];
+                   s.z() = 0;
+                   Source_dUdt_advec[hLevelsCellList[level][i]] = s;
+
+                   s.x() = source_ugColumn[level];
+                   s.y() = source_vgColumn[level];
+                   Source_Ug[hLevelsCellList[level][i]] = s;
+
+                   s.x() = source_uColumn[level];
+                   s.y() = source_vColumn[level];
+                   Source_U_LS[hLevelsCellList[level][i]] = s;
+
                }
            }                               
 
@@ -406,6 +455,26 @@
                                          sourceTemperatureTimesSpecified,
                                          sourceHeightsTemperatureSpecified,
                                          sourceTemperatureSpecified);
+           source_dthldt_advecColumn = interpolate2D(t,
+                                          hLevelsValues,
+                                          source_dthldt_advecTimesSpecified,
+                                          sourceHeightsMomentumSpecified,
+                                          source_dthldt_advecSpecified);
+           source_dqtdt_advecColumn = interpolate2D(t,
+                                          hLevelsValues,
+                                          source_dqtdt_advecTimesSpecified,
+                                          sourceHeightsMomentumSpecified,
+                                          source_dqtdt_advecSpecified);
+           source_thlColumn = interpolate2D(t,
+                                          hLevelsValues,
+                                          source_thlTimesSpecified,
+                                          sourceHeightsMomentumSpecified,
+                                          source_thlSpecified);
+           source_qtColumn = interpolate2D(t,
+                                          hLevelsValues,
+                                          source_qtTimesSpecified,
+                                          sourceHeightsMomentumSpecified,
+                                          source_qtSpecified);
 
            // Now go by cell levels and apply the source term.
            forAll(hLevelsCellList,level)
@@ -413,6 +482,10 @@
                for (label i = 0; i < numCellPerLevel[level]; i++)
                {
                    SourceT[hLevelsCellList[level][i]] = sourceTColumn[level];
+                   Source_dthldt_advec[hLevelsCellList[level][i]] = source_dthldt_advecColumn[level];
+                   Source_dqtdt_advec[hLevelsCellList[level][i]] = source_dqtdt_advecColumn[level];
+                   Source_thl_LS[hLevelsCellList[level][i]] = source_thlColumn[level];
+                   Source_qt_LS[hLevelsCellList[level][i]] = source_qtColumn[level];
                }
            }                               
 

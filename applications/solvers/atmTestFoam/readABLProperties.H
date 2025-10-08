@@ -28,25 +28,162 @@
        word velocityInputType(ABLProperties.lookup("velocityInputType"));
 
        // Read in the heights at which the sources are given.
-       List<scalar> sourceHeightsMomentumSpecified(ABLProperties.lookup("sourceHeightsMomentum"));
-       List<scalar> sourceHeightsTemperatureSpecified(ABLProperties.lookup("sourceHeightsTemperature"));
+       List<scalar> sourceHeightsMomentumSpecified(ABLProperties.lookup("Z"));
+       List<scalar> sourceHeightsTemperatureSpecified(ABLProperties.lookup("Z"));
+
+       // Read in LS2D Terms
+       List<List<scalar> > source_dudt_advec(ABLProperties.lookup("dudt_advec"));
+       List<List<scalar> > source_dvdt_advec(ABLProperties.lookup("dvdt_advec"));
+       List<List<scalar> > source_dthldt_advec(ABLProperties.lookup("dthldt_advec"));
+       List<List<scalar> > source_dqtdt_advec(ABLProperties.lookup("dqtdt_advec"));
+       List<List<scalar> > source_u(ABLProperties.lookup("u"));
+       List<List<scalar> > source_v(ABLProperties.lookup("v"));
+       List<List<scalar> > source_w(ABLProperties.lookup("w"));
+       List<List<scalar> > source_ug(ABLProperties.lookup("ug"));
+       List<List<scalar> > source_vg(ABLProperties.lookup("vg"));
+       List<List<scalar> > source_thl(ABLProperties.lookup("thl"));
+       List<List<scalar> > source_qt(ABLProperties.lookup("qt"));
 
        // Read in the table of momentum source vs. time and height.
-       List<List<scalar> > sourceTableMomentumX(ABLProperties.lookup("sourceTableMomentumX"));
-       List<List<scalar> > sourceTableMomentumY(ABLProperties.lookup("sourceTableMomentumY"));
-       List<List<scalar> > sourceTableMomentumZ(ABLProperties.lookup("sourceTableMomentumZ"));
+       List<List<scalar> > sourceTableMomentumX(ABLProperties.lookup("dudt_advec"));
+       List<List<scalar> > sourceTableMomentumY(ABLProperties.lookup("dvdt_advec"));
+       List<List<scalar> > sourceTableMomentumZ(ABLProperties.lookup("w"));
 
        // Read in the table of temperature source vs. time and height.
-       List<List<scalar> > sourceTableTemperature(ABLProperties.lookup("sourceTableTemperature"));
+       List<List<scalar> > sourceTableTemperature(ABLProperties.lookup("dthldt_advec"));
 
 
        // Check sizes of source tables.
        label nSourceMomentumHeights = sourceHeightsMomentumSpecified.size();
        label nSourceTemperatureHeights = sourceHeightsTemperatureSpecified.size();
+
+       label nSource_dudt_advec_Times = source_dudt_advec.size();
+       label nSource_dvdt_advec_Times = source_dvdt_advec.size();
+       label nSource_dthldt_advec_Times = source_dthldt_advec.size();
+       label nSource_dqtdt_advec_Times = source_dqtdt_advec.size();
+       label nSource_u_Times = source_u.size();
+       label nSource_v_Times = source_v.size();
+       label nSource_w_Times = source_w.size();
+       label nSource_ug_Times = source_ug.size();
+       label nSource_vg_Times = source_vg.size();
+       label nSource_thl_Times = source_thl.size();
+       label nSource_qt_Times = source_qt.size();
+
        label nSourceMomentumXTimes = sourceTableMomentumX.size();
        label nSourceMomentumYTimes = sourceTableMomentumY.size();
        label nSourceMomentumZTimes = sourceTableMomentumZ.size();
        label nSourceTemperatureTimes = sourceTableTemperature.size();
+
+       forAll(source_dudt_advec,i)
+       {
+           if (source_dudt_advec[i].size()-1 != nSourceMomentumHeights)
+           {
+               FatalErrorIn
+               (
+                   "Number of source_dudt_advec heights does not match sourceHeightsMomentum"
+               )   << abort(FatalError);
+           }
+       }
+       forAll(source_dvdt_advec,i)
+       {
+           if (source_dvdt_advec[i].size()-1 != nSourceMomentumHeights)
+           {
+               FatalErrorIn
+               (
+                   "Number of source_dvdt_advec heights does not match sourceHeightsMomentum"
+               )   << abort(FatalError);
+           }
+       }
+       forAll(source_dthldt_advec,i)
+       {
+           if (source_dthldt_advec[i].size()-1 != nSourceMomentumHeights)
+           {
+               FatalErrorIn
+               (
+                   "Number of source_dthldt_advec heights does not match sourceHeightsMomentum"
+               )   << abort(FatalError);
+           }
+       }
+       forAll(source_dqtdt_advec,i)
+       {
+           if (source_dqtdt_advec[i].size()-1 != nSourceMomentumHeights)
+           {
+               FatalErrorIn
+               (
+                   "Number of source_dqtdt_advec heights does not match sourceHeightsMomentum"
+               )   << abort(FatalError);
+           }
+       }
+       forAll(source_u,i)
+       {
+           if (source_u[i].size()-1 != nSourceMomentumHeights)
+           {
+               FatalErrorIn
+               (
+                   "Number of source_u heights does not match sourceHeightsMomentum"
+               )   << abort(FatalError);
+           }
+       }
+       forAll(source_v,i)
+       {
+           if (source_v[i].size()-1 != nSourceMomentumHeights)
+           {
+               FatalErrorIn
+               (
+                   "Number of source_v heights does not match sourceHeightsMomentum"
+               )   << abort(FatalError);
+           }
+       }
+       forAll(source_w,i)
+       {
+           if (source_w[i].size()-1 != nSourceMomentumHeights)
+           {
+               FatalErrorIn
+               (
+                   "Number of source_w heights does not match sourceHeightsMomentum"
+               )   << abort(FatalError);
+           }
+       }
+       forAll(source_ug,i)
+       {
+           if (source_ug[i].size()-1 != nSourceMomentumHeights)
+           {
+               FatalErrorIn
+               (
+                   "Number of source_ug heights does not match sourceHeightsMomentum"
+               )   << abort(FatalError);
+           }
+       }
+       forAll(source_vg,i)
+       {
+           if (source_vg[i].size()-1 != nSourceMomentumHeights)
+           {
+               FatalErrorIn
+               (
+                   "Number of source_vg heights does not match sourceHeightsMomentum"
+               )   << abort(FatalError);
+           }
+       }
+       forAll(source_thl,i)
+       {
+           if (source_thl[i].size()-1 != nSourceMomentumHeights)
+           {
+               FatalErrorIn
+               (
+                   "Number of source_vg heights does not match sourceHeightsMomentum"
+               )   << abort(FatalError);
+           }
+       }
+       forAll(source_qt,i)
+       {
+           if (source_qt[i].size()-1 != nSourceMomentumHeights)
+           {
+               FatalErrorIn
+               (
+                   "Number of source_vg heights does not match sourceHeightsMomentum"
+               )   << abort(FatalError);
+           }
+       }
        forAll(sourceTableMomentumX,i)
        {
            if (sourceTableMomentumX[i].size()-1 != nSourceMomentumHeights)
@@ -90,15 +227,129 @@
 
 
        // Break the source tables into interpolation tables.
+       List<scalar> source_dudt_advecTimesSpecified(nSource_dudt_advec_Times,0.0);
+       List<scalar> source_dvdt_advecTimesSpecified(nSource_dvdt_advec_Times,0.0);
+       List<scalar> source_dthldt_advecTimesSpecified(nSource_dthldt_advec_Times,0.0);
+       List<scalar> source_dqtdt_advecTimesSpecified(nSource_dqtdt_advec_Times,0.0);
+       List<scalar> source_uTimesSpecified(nSource_u_Times,0.0);
+       List<scalar> source_vTimesSpecified(nSource_v_Times,0.0);
+       List<scalar> source_wTimesSpecified(nSource_w_Times,0.0);
+       List<scalar> source_ugTimesSpecified(nSource_ug_Times,0.0);
+       List<scalar> source_vgTimesSpecified(nSource_vg_Times,0.0);
+       List<scalar> source_thlTimesSpecified(nSource_thl_Times,0.0);
+       List<scalar> source_qtTimesSpecified(nSource_qt_Times,0.0);
+
        List<scalar> sourceMomentumXTimesSpecified(nSourceMomentumXTimes,0.0);
        List<scalar> sourceMomentumYTimesSpecified(nSourceMomentumYTimes,0.0);
        List<scalar> sourceMomentumZTimesSpecified(nSourceMomentumZTimes,0.0);
        List<scalar> sourceTemperatureTimesSpecified(nSourceTemperatureTimes,0.0);
 
+
+       List<List<scalar> > source_dudt_advecSpecified(nSource_dudt_advec_Times,List<scalar>(nSourceMomentumHeights,0.0));
+       List<List<scalar> > source_dvdt_advecSpecified(nSource_dvdt_advec_Times,List<scalar>(nSourceMomentumHeights,0.0));
+       List<List<scalar> > source_dthldt_advecSpecified(nSource_dthldt_advec_Times,List<scalar>(nSourceMomentumHeights,0.0));
+       List<List<scalar> > source_dqtdt_advecSpecified(nSource_dqtdt_advec_Times,List<scalar>(nSourceMomentumHeights,0.0));
+       List<List<scalar> > source_uSpecified(nSource_u_Times,List<scalar>(nSourceMomentumHeights,0.0));
+       List<List<scalar> > source_vSpecified(nSource_v_Times,List<scalar>(nSourceMomentumHeights,0.0));
+       List<List<scalar> > source_wSpecified(nSource_w_Times,List<scalar>(nSourceMomentumHeights,0.0));
+       List<List<scalar> > source_ugSpecified(nSource_ug_Times,List<scalar>(nSourceMomentumHeights,0.0));
+       List<List<scalar> > source_vgSpecified(nSource_vg_Times,List<scalar>(nSourceMomentumHeights,0.0));
+       List<List<scalar> > source_thlSpecified(nSource_thl_Times,List<scalar>(nSourceMomentumHeights,0.0));
+       List<List<scalar> > source_qtSpecified(nSource_qt_Times,List<scalar>(nSourceMomentumHeights,0.0));
+
        List<List<scalar> > sourceMomentumXSpecified(nSourceMomentumXTimes,List<scalar>(nSourceMomentumHeights,0.0));
        List<List<scalar> > sourceMomentumYSpecified(nSourceMomentumYTimes,List<scalar>(nSourceMomentumHeights,0.0));
        List<List<scalar> > sourceMomentumZSpecified(nSourceMomentumZTimes,List<scalar>(nSourceMomentumHeights,0.0));
        List<List<scalar> > sourceTemperatureSpecified(nSourceTemperatureTimes,List<scalar>(nSourceTemperatureHeights,0.0));
+
+       for(int i = 0; i < nSource_dudt_advec_Times; i++)
+       {
+           source_dudt_advecTimesSpecified[i] = source_dudt_advec[i][0];
+           for(int j = 0; j < nSourceMomentumHeights; j++)
+           {
+               source_dudt_advecSpecified[i][j] = source_dudt_advec[i][j+1];
+           }
+       }
+       for(int i = 0; i < nSource_dvdt_advec_Times; i++)
+       {
+           source_dvdt_advecTimesSpecified[i] = source_dvdt_advec[i][0];
+           for(int j = 0; j < nSourceMomentumHeights; j++)
+           {
+               source_dvdt_advecSpecified[i][j] = source_dvdt_advec[i][j+1];
+           }
+       }
+       for(int i = 0; i < nSource_dthldt_advec_Times; i++)
+       {
+           source_dthldt_advecTimesSpecified[i] = source_dthldt_advec[i][0];
+           for(int j = 0; j < nSourceMomentumHeights; j++)
+           {
+               source_dthldt_advecSpecified[i][j] = source_dthldt_advec[i][j+1];
+           }
+       }
+       for(int i = 0; i < nSource_dqtdt_advec_Times; i++)
+       {
+           source_dqtdt_advecTimesSpecified[i] = source_dqtdt_advec[i][0];
+           for(int j = 0; j < nSourceMomentumHeights; j++)
+           {
+               source_dqtdt_advecSpecified[i][j] = source_dqtdt_advec[i][j+1];
+           }
+       }
+       for(int i = 0; i < nSource_u_Times; i++)
+       {
+           source_uTimesSpecified[i] = source_u[i][0];
+           for(int j = 0; j < nSourceMomentumHeights; j++)
+           {
+               source_uSpecified[i][j] = source_u[i][j+1];
+           }
+       }
+       for(int i = 0; i < nSource_v_Times; i++)
+       {
+           source_vTimesSpecified[i] = source_v[i][0];
+           for(int j = 0; j < nSourceMomentumHeights; j++)
+           {
+               source_vSpecified[i][j] = source_v[i][j+1];
+           }
+       }
+       for(int i = 0; i < nSource_w_Times; i++)
+       {
+           source_wTimesSpecified[i] = source_w[i][0];
+           for(int j = 0; j < nSourceMomentumHeights; j++)
+           {
+               source_wSpecified[i][j] = source_w[i][j+1];
+           }
+       }
+       for(int i = 0; i < nSource_ug_Times; i++)
+       {
+           source_ugTimesSpecified[i] = source_ug[i][0];
+           for(int j = 0; j < nSourceMomentumHeights; j++)
+           {
+               source_ugSpecified[i][j] = source_ug[i][j+1];
+           }
+       }
+       for(int i = 0; i < nSource_vg_Times; i++)
+       {
+           source_vgTimesSpecified[i] = source_vg[i][0];
+           for(int j = 0; j < nSourceMomentumHeights; j++)
+           {
+               source_vgSpecified[i][j] = source_vg[i][j+1];
+           }
+       }
+       for(int i = 0; i < nSource_thl_Times; i++)
+       {
+           source_thlTimesSpecified[i] = source_thl[i][0];
+           for(int j = 0; j < nSourceMomentumHeights; j++)
+           {
+               source_thlSpecified[i][j] = source_thl[i][j+1];
+           }
+       }
+       for(int i = 0; i < nSource_qt_Times; i++)
+       {
+           source_qtTimesSpecified[i] = source_qt[i][0];
+           for(int j = 0; j < nSourceMomentumHeights; j++)
+           {
+               source_qtSpecified[i][j] = source_qt[i][j+1];
+           }
+       }
 
        for(int i = 0; i < nSourceMomentumXTimes; i++)
        {
@@ -165,6 +416,8 @@
        scalar alphaTemperature(ABLProperties.lookupOrDefault<scalar>("alphaTemperature",1.0));
 
 
+       // Large scale nudging relaxation value
+       scalar tau(ABLProperties.lookupOrDefault<scalar>("tau", 1e-4));
 
 
     // PROPERTIES CONCERNING CORIOLIS FORCES
