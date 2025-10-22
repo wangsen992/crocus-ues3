@@ -1,5 +1,0 @@
-SOURCE = \
-surfaceMeshTools/surfaceMeshTools.C \
-meshSurfaceCutter/meshSurfaceCutter.C \
-
-# sources

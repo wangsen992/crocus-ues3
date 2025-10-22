@@ -59,11 +59,11 @@ canopyEnergyTransferModel<BaseCanopyModel>::canopyEnergyTransferModel
     (
       IOobject
       (
-        "canopy_FT",
-        tree.mesh().time().constant(),
+        "canopyFT",
+        tree.mesh().time().timeName(),
         tree.mesh(),
         IOobject::NO_READ,
-        IOobject::NO_WRITE
+        IOobject::AUTO_WRITE
       ),
       tree.mesh(),
       dimensionedScalar(dimTemperature/dimTime, 0)
@@ -72,11 +72,11 @@ canopyEnergyTransferModel<BaseCanopyModel>::canopyEnergyTransferModel
     (
       IOobject
       (
-        "canopy_Fq",
-        tree.mesh().time().constant(),
+        "canopyFq",
+        tree.mesh().time().timeName(),
         tree.mesh(),
         IOobject::NO_READ,
-        IOobject::NO_WRITE
+        IOobject::AUTO_WRITE
       ),
       tree.mesh(),
       dimensionedScalar(dimless/dimTime, 0)
@@ -124,13 +124,14 @@ canopyEnergyTransferModel<BaseCanopyModel>::canopyEnergyTransferModel
     (
       IOobject
       (
-        "canopy_Tleaf",
-        tree.mesh().time().constant(),
+        "canopyTleaf",
+        tree.mesh().time().timeName(),
         tree.mesh(),
         IOobject::NO_READ,
-        IOobject::NO_WRITE
+        IOobject::AUTO_WRITE
       ),
-      tree.mesh().lookupObjectRef<volScalarField>("T")
+      tree.mesh(),
+      dimensionedScalar(dimTemperature, 300)
     ),
     Cleaf_
     (
@@ -178,6 +179,11 @@ canopyEnergyTransferModel<BaseCanopyModel>::canopyEnergyTransferModel
     // Info << "radiationType: " << radiation_.typeName_() << endl;
     // Info << "radiationType: " << radiation_.name() << endl;
     // Info << "radiationType: " << radiation_.type() << endl;
+    volScalarField& Tref( tree.mesh().lookupObjectRef<volScalarField>("T"));
+    forAll(Tref, celli)
+    {
+        Tleaf_[celli] = Tref[celli];
+    }
 
     init();
     correctEnergyTransfer();
@@ -197,7 +203,7 @@ void canopyEnergyTransferModel<BaseCanopyModel>::correctEnergyTransfer()
     // const volScalarField& p = thermo_.p();
     scalar rho = 1.0;
     scalar Cp = 1005.0;
-    scalar Lv = 2458.3;
+    scalar Lv = 2265000.0;
     const volScalarField& T = mesh.lookupObjectRef<volScalarField>("T");
     const volScalarField& p = T.mesh().lookupObjectRef<volScalarField>("p");
     const volVectorField& U = BaseCanopyModel::U();
@@ -214,6 +220,8 @@ void canopyEnergyTransferModel<BaseCanopyModel>::correctEnergyTransfer()
     scalar rfcLeaf = 0.6; // leaf reflectance (arbitrary value)
     scalar C_ru = 0.5; // correct for Ru calculation (different direction)
                        //
+    Info << "[debug] Tleaf max " << gMax(Tleaf_) << endl;
+    Info << "[debug] Tleaf min " << gMin(Tleaf_) << endl;
 
     // Attempt for non-looping procedures
     // auto ldia = BaseCanopyModel::ldia();
@@ -373,14 +381,8 @@ void canopyEnergyTransferModel<BaseCanopyModel>::correctEnergyTransfer()
               2 * ladCell * (qsatleafCell - qCell)  / (rbleafCell + rsleafCell)
 
           ); // Placeholder 
-          Fqleaf *= pos(Fqleaf);
-          // Info << ladCell << ", " 
-          //      << qsatleafCell << ", "
-          //      << qCell << ", "
-          //      << rbleafCell << ", "
-          //      << rsleafCell << ", "
-          //      << endl;
-          scalar FheLeConv = rhoCell * Lv * Fqleaf;
+          Fqleaf *= pos(Fqleaf); 
+          scalar FheLeConv = (-1) * rhoCell * Lv * Fqleaf;
 
         //- Radiative Transfer
           // Need a conversion function for total leaf area and absorption
@@ -404,12 +406,18 @@ void canopyEnergyTransferModel<BaseCanopyModel>::correctEnergyTransfer()
           //  accounted for in the scattering model.
           scalar Ruleaf = C_ru * rfcLeaf * laCovCell * GCell ;
 
-        scalar dleaf =  (Ruleaf - (FheConv + FheLeConv + EleafCell*0)) /  (CleafCell * rholeafCell * ladCell * hleafCell);
+        scalar dleaf =  (Ruleaf - (FheConv - FheLeConv + EleafCell)) /  (CleafCell * rholeafCell * ladCell * hleafCell);
           // Info << Ruleaf << ", "
           //      << FheConv << ", " << TleafCell << ", " << TCell << ", " << rbleafCell << ", " << ladCell << ", "
           //      << FheLeConv << ", "
           //      << EleafCell << ", "
           //      << endl;
+        
+        // if (ladCell > 0.7)
+        // {
+        //   Info << "[debug] dleaf " << dleaf << endl;
+        // }
+        
 
         // Update field values
         a_[i] = aleafCell;
@@ -421,9 +429,9 @@ void canopyEnergyTransferModel<BaseCanopyModel>::correctEnergyTransfer()
         
         // Correcting Energy Related Terms
         scalar m = 1.0;
-        FT_[i] = (-1 * m ) * (FheConv + FheLeConv) / (CpCell * rhoCell);
+        FT_[i] = (FheConv + FheLeConv) / (CpCell * rhoCell);
         // FT_[i] = (-1) * (FheConv ) / (CpCell * rhoCell);
-        Fq_[i] = m * Fqleaf;
+        Fq_[i] = Fqleaf;
         Tleaf_[i] = TleafCell + m * dleaf * deltaT;
     }
 }

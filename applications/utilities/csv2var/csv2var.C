@@ -48,15 +48,6 @@ using namespace Foam;
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 int main(int argc, char *argv[])
 {
-    argList::addNote
-    (
-        "Divides external faces into patches based on feature angle"
-    );
-
-    #include "addOverwriteOption.H"
-
-    argList::noParallel();
-    argList::noFunctionObjects();  // Never use function objects
 
     // argList::addArgument("var", "variable name (must be available in constant");
 
@@ -69,7 +60,7 @@ int main(int argc, char *argv[])
         << " s\n" << endl << endl;
 
     word var_name("lad");
-    word data_path("constant/urban/point_data");
+    word data_path("../constant/urban/point_data");
     // Read var file
     IOdictionary var_dict
     (
@@ -162,14 +153,25 @@ int main(int argc, char *argv[])
 
     scalar k = 0.5;
     scalar t = 0; // transmissivity
+    label num_points = points.size();
+    scalar perc = 0.05;
     forAll(points, i)
     {
+      if (i > num_points * perc)
+      {
+          Pout << "processed " << perc * 100 << " points..." << endl;
+          perc += 0.05;
+      }
+      if (!ms.isInside(points[i]))
+      {
+        continue;
+      }
       label celli = ms.findCell(points[i]);
       scalar ladi;
       if (celli != -1)
       {
           // Info << celli << endl;
-          ladi = 0.01 * var_data[i];
+          ladi = min(1 * var_data[i], 3);
           lad.primitiveFieldRef()[celli] = ladi;
           la.primitiveFieldRef()[celli] = ladi * mesh.V()[celli];
           t = 1/Foam::exp(ladi * k * pow(mesh.V()[celli],1/3));

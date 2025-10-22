@@ -11,8 +11,8 @@
      ==
         fvOptions(U)
       + Source_dUdt_advec
-      + tau * (Omega ^ (U - Source_Ug))
-      + tau * (Source_U_LS - U)
+      + (Omega ^ (U - Source_Ug))
+      + (tau+dampingCoeff) * (Source_U_LS - U)
     );
 
     UEqn.relax();

@@ -417,7 +417,7 @@
 
 
        // Large scale nudging relaxation value
-       scalar tau(ABLProperties.lookupOrDefault<scalar>("tau", 1e-4));
+       dimensionedScalar tau("tau", dimless/dimTime, ABLProperties.lookupOrDefault<scalar>("tau", 1e-4));
 
 
     // PROPERTIES CONCERNING CORIOLIS FORCES
@@ -458,3 +458,4 @@
 
        // Statistics gathering/writing frequency?
        int statisticsFreq(int(readScalar(ABLProperties.lookup("statisticsFrequency"))));
+

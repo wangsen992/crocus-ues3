@@ -13,7 +13,7 @@
         radiation->ST(rhoCpRef, T)
       + fvOptions(T)
       + Source_dthldt_advec
-      + tau * (Source_thl_LS - T)
+      + (tau+dampingCoeff) * (Source_thl_LS - T)
     );
 
     TEqn.relax();

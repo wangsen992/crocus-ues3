@@ -154,24 +154,15 @@ void Foam::energyBalanceHeatFluxTemperatureFvPatchScalarField::updateCoeffs()
     scalarField rho(Tp.size(), 0);
     scalarField Cp(Tp.size(), 1000);
     scalarField qEff(Tp.size(), 0);
-    // qr =
-    //    patch().lookupPatchField<volScalarField, scalar>
-    //    (
-    //      IOobject::groupName("qr", internalField().group())
-    //    );
+
     qr  = patch().lookupPatchField<volScalarField, scalar> ( "qr");
     qin = patch().lookupPatchField<volScalarField, scalar> ( "qin");
     qem = patch().lookupPatchField<volScalarField, scalar> ( "qem");
-    Info << "[Debug] average(qin) = " << gAverage(qin) << endl;
-    Info << "[Debug] average(qem) = " << gAverage(qem) << endl;
-    Info << "[Debug] average(qin + qem) = " << gAverage(qin + qem) << endl;
-    Info << "[Debug] average(qin - qem) = " << gAverage(qin - qem) << endl;
-    Info << "[Debug] average(qr) = " << gAverage(qr) << endl;
-    // alphat = 
-    //     patch().lookupPatchField<volScalarField, scalar>
-    //     (
-    //       IOobject::groupName("alphat", internalField().group())
-    //     );
+    alphat = 
+        patch().lookupPatchField<volScalarField, scalar>
+        (
+          IOobject::groupName("alphat", internalField().group())
+        );
     // rho = 
     //     patch().lookupPatchField<volScalarField, scalar>
     //     (
@@ -182,11 +173,14 @@ void Foam::energyBalanceHeatFluxTemperatureFvPatchScalarField::updateCoeffs()
     //     (
     //       IOobject::groupName("Cp", internalField().group())
     //     );
-    qEff = Cp 
+    qEff = Cp  * alphat
           * 
             (this->refValue() - this->patchInternalField()) 
-          / this->patch().deltaCoeffs();
+          * this->patch().deltaCoeffs();
 
+    // Temperatue change of the patch is computed by having net energy change /
+    // specific heat capacity
+    // qr: total radiative heat flux [W/m2]
     refGrad() = 0.0;
     refValue() += (- qr - qEff) / (2400 * 0.1 * 880);
     // refValue() += (qin + qem) / (2400 * 0.1 * 880);

@@ -1,3 +1,0 @@
-SOURCE += functionObjects/groundDistance/groundDistance.C
-
-LIB = $(FOAM_USER_LIBBIN)/libtest

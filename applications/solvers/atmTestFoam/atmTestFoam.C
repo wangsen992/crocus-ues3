@@ -99,6 +99,52 @@ int main(int argc, char *argv[])
     #include "initContinuityErrs.H"
 
     turbulence->validate();
+    
+    // create coefficients for lateral boundary damping
+    volScalarField dampingCoeff
+    (
+        IOobject
+        (
+            "dampingCoeff",
+            runTime.timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("dampingCoeff",dimless/dimTime,0.0)
+    );
+
+    scalar Lx(ABLProperties.lookupOrDefault<scalar>("xMax", 1000.0));
+    scalar Ly(ABLProperties.lookupOrDefault<scalar>("yMax", 1000.0));
+    scalar d(ABLProperties.lookupOrDefault<scalar>("dDamp", 200.0));
+    scalar maxC(ABLProperties.lookupOrDefault<scalar>("CDamp", 1e-5));
+    forAll(dampingCoeff, celli)
+    {
+        scalar x = mesh.cellCentres()[celli].x();
+        scalar y = mesh.cellCentres()[celli].y();
+        scalar z = mesh.cellCentres()[celli].z();
+
+        scalar cur = dampingCoeff.primitiveFieldRef()[celli];
+        if (x > (Lx - d))
+        {
+          dampingCoeff.primitiveFieldRef()[celli] = max((d - (Lx - x))/d * maxC, cur);
+        }
+        else if (x < (d - Lx))
+        {
+          dampingCoeff.primitiveFieldRef()[celli] = max((d - (Lx + x))/d * maxC, cur);
+        }
+        else if (y > (Ly - d))
+        {
+          dampingCoeff.primitiveFieldRef()[celli] = max((d - (Ly - y))/d * maxC, cur);
+        }
+        else if (y < (d - Ly))
+        {
+          dampingCoeff.primitiveFieldRef()[celli] = max((d - (Ly + y))/d * maxC, cur);
+        }
+    }
+
+      
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
