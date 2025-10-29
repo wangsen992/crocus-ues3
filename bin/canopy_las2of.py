@@ -47,7 +47,7 @@ def voxel(ar, bottom, vwidth):
     return vx, vy, vz, vcnt, vbcnt
 
 def to_OF_list(name, list_data):
-    return f"{name} nonuniform {len(list_data)}" + "\n" + "(\n\t" + "\n\t".join(list_data) + "\n);"
+    return f"{name} {len(list_data)}" + "\n" + "(\n\t" + "\n\t".join(list_data) + "\n);\n"
 
 def proc_subset(fname_veg):
     veg_las = laspy.read(fname_veg)
@@ -157,4 +157,4 @@ if __name__ == "__main__":
             points_list += pl
             lad_list += ll
 
-    # to_foam(points_list, lad_list)
+    to_foam(points_list, lad_list)
