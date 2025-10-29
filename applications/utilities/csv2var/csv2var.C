@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
         << " s\n" << endl << endl;
 
     word var_name("lad");
-    word data_path("../constant/urban/point_data");
+    word data_path("./constant/urban/point_data");
     // Read var file
     IOdictionary var_dict
     (
